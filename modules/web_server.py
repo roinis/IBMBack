@@ -31,7 +31,9 @@ class WebServer:
         return_val = {}
         base_route = environ.get('PATH_INFO').split('/')[1]
         try:
-            if base_route in WebServer.routing_table:
+            if base_route == '' or base_route == 'favicon.ico':
+                return_val = {}
+            elif base_route in WebServer.routing_table:
                 return_val = WebServer.routing_table[base_route].handle_request(environ)
                 if 'auth' in environ.get('PATH_INFO'):
                     headers.append(('Set-Cookie',f'user_token={return_val};max-age=600;SameSite=Strict;Path=/'))
